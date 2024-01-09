@@ -6,7 +6,7 @@
 /*   By: dtolmaco <dtolmaco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 14:07:52 by dtolmaco          #+#    #+#             */
-/*   Updated: 2024/01/09 16:58:23 by dtolmaco         ###   ########.fr       */
+/*   Updated: 2024/01/09 18:37:39 by dtolmaco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,15 @@ void	start_threads(t_philo *philo, t_data *data)
 
 	i = 0;
 	data->threads = malloc(sizeof(pthread_t) * data->num_philo);
-	while (i < data->num_philo)
+	if (data->num_philo == 1)
+		pthread_create(&data->threads[0], NULL, one_philo, (void *)&philo[0]);
+	else
 	{
-		pthread_create(&data->threads[i], NULL, live, (void *)&philo[i]);
-		i++;
+		while (i < data->num_philo)
+		{
+			pthread_create(&data->threads[i], NULL, live, (void *)&philo[i]);
+			i++;
+		}
 	}
 }
 

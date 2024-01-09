@@ -6,7 +6,7 @@
 /*   By: dtolmaco <dtolmaco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 14:08:04 by dtolmaco          #+#    #+#             */
-/*   Updated: 2024/01/09 17:08:54 by dtolmaco         ###   ########.fr       */
+/*   Updated: 2024/01/09 18:39:55 by dtolmaco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_philo
 }	t_philo;
 
 void	*live(void *data);
+void	*one_philo(void *data);
 
 // memory
 void	init_data(t_data *data, char **argv, int argc);

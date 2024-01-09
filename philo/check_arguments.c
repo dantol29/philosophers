@@ -6,11 +6,22 @@
 /*   By: dtolmaco <dtolmaco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:19:23 by dtolmaco          #+#    #+#             */
-/*   Updated: 2024/01/09 17:52:02 by dtolmaco         ###   ########.fr       */
+/*   Updated: 2024/01/09 18:40:29 by dtolmaco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+void	*one_philo(void *data)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)data;
+	message("has taken a fork", philo);
+	ft_usleep(philo->data->time_to_die);
+	message("died", philo);
+	return (NULL);
+}
 
 static int	corner_cases(char **argv, int argc)
 {
@@ -20,13 +31,6 @@ static int	corner_cases(char **argv, int argc)
 	if (argc == 6 && ft_atoi(argv[5]) == 0)
 	{
 		printf("All philosophers ate their meal\n");
-		return (1);
-	}
-	if (ft_atoi(argv[1]) == 1)
-	{
-		printf("0 1 has taken a fork\n");
-		ft_usleep(ft_atoi(argv[4]));
-		printf("%d 1 died\n", ft_atoi(argv[2]));
 		return (1);
 	}
 	return (0);
