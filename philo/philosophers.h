@@ -6,18 +6,18 @@
 /*   By: dtolmaco <dtolmaco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 14:08:04 by dtolmaco          #+#    #+#             */
-/*   Updated: 2024/01/09 12:35:55 by dtolmaco         ###   ########.fr       */
+/*   Updated: 2024/01/09 17:08:54 by dtolmaco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <sys/time.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <pthread.h>
+# include <sys/time.h>
 
 typedef struct s_data
 {
@@ -28,8 +28,8 @@ typedef struct s_data
 	int				must_eat;
 	int				philo_finish;
 	int				is_dead;
-	pthread_mutex_t *forks;
-	pthread_mutex_t waiter;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	waiter;
 	pthread_t		*threads;
 }	t_data;
 
@@ -39,11 +39,12 @@ typedef struct s_philo
 	int				ate;
 	long			start_time;
 	long			last_meal;
+	long			time_passed;
 	t_data			*data;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 }	t_philo;
-// life of philosophers
+
 void	*live(void *data);
 
 // memory
@@ -55,10 +56,10 @@ void	free_all(t_philo *philo);
 
 // utils
 int		ft_atoi(const char *str);
-int		check_argv(int argc);
+int		check_argv(int argc, char **argv);
 void	wait_threads(pthread_t *threads, int size);
-long	get_time();
-int		check_if_dead(t_philo *philo, int status);
+long	get_time(void);
 void	message(char *str, t_philo *philo);
+int		ft_usleep(size_t milliseconds);
 
 #endif

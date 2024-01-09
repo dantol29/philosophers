@@ -1,7 +1,7 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 NAME = philo
-SRC = main.c utils.c memory.c
+SRC = main.c utils.c memory.c check_arguments.c
 OBJS = $(SRC:.c=.o)
 
 all: $(NAME)

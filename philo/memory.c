@@ -6,7 +6,7 @@
 /*   By: dtolmaco <dtolmaco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 14:07:52 by dtolmaco          #+#    #+#             */
-/*   Updated: 2024/01/09 12:52:05 by dtolmaco         ###   ########.fr       */
+/*   Updated: 2024/01/09 16:58:23 by dtolmaco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ void	create_philosophers(t_philo *philo, t_data *data)
 		philo[i].start_time = 0;
 		philo[i].last_meal = 0;
 		philo[i].ate = 0;
+		philo[i].time_passed = 0;
+		philo[i].start_time = get_time();
+		philo[i].last_meal = get_time() - philo->start_time;
 		philo[i].left_fork = &data->forks[i];
 		if (i + 1 == data->num_philo)
 			philo[i].right_fork = &data->forks[0];
@@ -84,6 +87,9 @@ void	free_all(t_philo *philo)
 		i++;
 	}
 	pthread_mutex_destroy(&philo->data->waiter);
+	if (philo->data->philo_finish == philo->data->num_philo)
+		printf("All %d philosphers ate %d meals\n", \
+		philo->data->num_philo, philo->data->must_eat);
 	free(philo->data->forks);
 	free(philo->data->threads);
 }
