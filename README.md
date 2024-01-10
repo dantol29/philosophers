@@ -124,7 +124,7 @@ int gettimeofday(struct timeval *tv, struct timezone *tz) // retrieves the curre
 ```
 ## Terminilogy (Processes and Semaphores)
 
-##. 1. Processes
+### 1. Processes
 ```
 #include <signal.h>
 #include <sys/wait.h>
