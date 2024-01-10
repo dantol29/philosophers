@@ -6,32 +6,51 @@
 /*   By: dtolmaco <dtolmaco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:19:23 by dtolmaco          #+#    #+#             */
-/*   Updated: 2024/01/09 18:40:29 by dtolmaco         ###   ########.fr       */
+/*   Updated: 2024/01/10 17:02:34 by dtolmaco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	*one_philo(void *data)
+int	ft_strcmp(const char *str1, const char *str2)
 {
-	t_philo	*philo;
+	size_t			i;
+	unsigned char	*s1;
+	unsigned char	*s2;
 
-	philo = (t_philo *)data;
-	message("has taken a fork", philo);
-	ft_usleep(philo->data->time_to_die);
-	message("died", philo);
-	return (NULL);
+	s1 = (unsigned char *)str1;
+	s2 = (unsigned char *)str2;
+	i = 0;
+	while (s1[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
+}
+
+int	ft_strlen(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
 
 static int	corner_cases(char **argv, int argc)
 {
+	int	i;
+
 	if (ft_atoi(argv[1]) < 1 || ft_atoi(argv[2]) < 1 \
 	|| ft_atoi(argv[3]) < 1 || ft_atoi (argv[4]) < 1)
 		return (1);
-	if (argc == 6 && ft_atoi(argv[5]) == 0)
-	{
-		printf("All philosophers ate their meal\n");
+	if (argc == 6 && ft_atoi(argv[5]) < 1)
 		return (1);
+	i = 1;
+	while (argv[i])
+	{
+		if (ft_atoi(argv[i]) == 0)
+			return (1);
+		i++;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: dtolmaco <dtolmaco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 14:07:52 by dtolmaco          #+#    #+#             */
-/*   Updated: 2024/01/09 18:37:39 by dtolmaco         ###   ########.fr       */
+/*   Updated: 2024/01/10 16:51:33 by dtolmaco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,10 @@ void	start_threads(t_philo *philo, t_data *data)
 
 	i = 0;
 	data->threads = malloc(sizeof(pthread_t) * data->num_philo);
-	if (data->num_philo == 1)
-		pthread_create(&data->threads[0], NULL, one_philo, (void *)&philo[0]);
-	else
+	while (i < data->num_philo)
 	{
-		while (i < data->num_philo)
-		{
-			pthread_create(&data->threads[i], NULL, live, (void *)&philo[i]);
-			i++;
-		}
+		pthread_create(&data->threads[i], NULL, live, (void *)&philo[i]);
+		i++;
 	}
 }
 
@@ -52,7 +47,6 @@ void	create_philosophers(t_philo *philo, t_data *data)
 		philo[i].data = data;
 		i++;
 	}
-	pthread_mutex_init(&data->waiter, NULL);
 }
 
 void	init_forks(t_data *data)
@@ -60,10 +54,13 @@ void	init_forks(t_data *data)
 	int	i;
 
 	i = 0;
+	data->forks_state = malloc(sizeof(int) * data->num_philo);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_philo);
+	pthread_mutex_init(&data->write_dead, NULL);
 	while (i < data->num_philo)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
+		data->forks_state[i] = 0;
 		i++;
 	}
 }
@@ -91,10 +88,11 @@ void	free_all(t_philo *philo)
 		pthread_mutex_destroy(&philo->data->forks[i]);
 		i++;
 	}
-	pthread_mutex_destroy(&philo->data->waiter);
-	if (philo->data->philo_finish == philo->data->num_philo)
-		printf("All %d philosphers ate %d meals\n", \
-		philo->data->num_philo, philo->data->must_eat);
+	pthread_mutex_destroy(&philo->data->write_dead);
 	free(philo->data->forks);
 	free(philo->data->threads);
+	free(philo->data->forks_state);
 }
+// if (philo->data->philo_finish == philo->data->num_philo)
+// 		printf("All %d philosphers ate %d meals\n", \
+// 		philo->data->num_philo, philo->data->must_eat);

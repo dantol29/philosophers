@@ -6,7 +6,7 @@
 /*   By: dtolmaco <dtolmaco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 14:08:04 by dtolmaco          #+#    #+#             */
-/*   Updated: 2024/01/09 18:39:55 by dtolmaco         ###   ########.fr       */
+/*   Updated: 2024/01/10 17:03:06 by dtolmaco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ typedef struct s_data
 	int				must_eat;
 	int				philo_finish;
 	int				is_dead;
+	int				*forks_state;
+	pthread_mutex_t	write_dead;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	waiter;
 	pthread_t		*threads;
 }	t_data;
 
@@ -46,7 +47,7 @@ typedef struct s_philo
 }	t_philo;
 
 void	*live(void *data);
-void	*one_philo(void *data);
+int		check_if_dead(t_philo *philo);
 
 // memory
 void	init_data(t_data *data, char **argv, int argc);
@@ -56,11 +57,13 @@ void	start_threads(t_philo *philo, t_data *data);
 void	free_all(t_philo *philo);
 
 // utils
-int		ft_atoi(const char *str);
+long	ft_atoi(const char *str);
+int		ft_strlen(const char *str);
+int		ft_strcmp(const char *str1, const char *str2);
 int		check_argv(int argc, char **argv);
 void	wait_threads(pthread_t *threads, int size);
 long	get_time(void);
 void	message(char *str, t_philo *philo);
-int		ft_usleep(size_t milliseconds);
+int		ft_usleep(t_philo *philo, size_t milliseconds);
 
 #endif

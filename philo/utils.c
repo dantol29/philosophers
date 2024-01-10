@@ -6,26 +6,31 @@
 /*   By: dtolmaco <dtolmaco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 14:09:20 by dtolmaco          #+#    #+#             */
-/*   Updated: 2024/01/09 17:46:08 by dtolmaco         ###   ########.fr       */
+/*   Updated: 2024/01/10 16:55:10 by dtolmaco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	ft_usleep(size_t milliseconds)
+int	ft_usleep(t_philo *philo, size_t milliseconds)
 {
 	size_t	start;
 
 	start = get_time();
 	while ((get_time() - start) < milliseconds)
+	{
 		usleep(500);
+		if (!check_if_dead(philo))
+			return (1);
+	}
 	return (0);
 }
 
 void	message(char *str, t_philo *philo)
 {
-	printf("%ld %d %s\n", get_time() - philo->start_time, \
-	philo->id, str);
+	if (philo->data->is_dead == 0)
+		printf("%ld %d %s\n", get_time() - philo->start_time, \
+		philo->id, str);
 }
 
 void	wait_threads(pthread_t *threads, int size)
@@ -48,11 +53,11 @@ long	get_time(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-int	ft_atoi(const char *str)
+long	ft_atoi(const char *str)
 {
-	int	result;
-	int	sign;
-	int	i;
+	long	result;
+	int		sign;
+	int		i;
 
 	i = 0;
 	result = 0;
@@ -70,5 +75,8 @@ int	ft_atoi(const char *str)
 		result = result * 10 + (str[i] - '0');
 		i++;
 	}
+	if ((result > 2147483647 || result < -2147483648 || ft_strlen(str) > 11) \
+	&& ft_strcmp(str, "-2147483648") != 0)
+		return (0);
 	return (result * sign);
 }
