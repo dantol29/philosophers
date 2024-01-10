@@ -1,9 +1,9 @@
 # Dining Philosophers Problem
 Classic synchronization and concurrency challenge.
 
-philo - Philosophers with threads and mutexes,
+### philo - Philosophers with threads and mutexes.
 
-philo_bonus - Philosophers with processes and semaphores.
+### philo_bonus - Philosophers with processes and semaphores.
 ## How to compile
 ```
 make
@@ -34,7 +34,7 @@ philosopher dies
 2. Initialize philosophers, forks and mutexes.
 
 3. Start threads
-.
+
 4. Main loop (eat, sleep, think, die).
 ## How I store data
 I use two structures. One for storing main data, the other one for philosophers.
@@ -48,8 +48,9 @@ typedef struct s_data
 	int				must_eat;
 	int				philo_finish;
 	int				is_dead;
-	pthread_mutex_t *forks;
-	pthread_mutex_t waiter;
+	int				*forks_state;
+	pthread_mutex_t	write_dead;
+	pthread_mutex_t	*forks;
 	pthread_t		*threads;
 }	t_data;
 
@@ -59,13 +60,14 @@ typedef struct s_philo
 	int				ate;
 	long			start_time;
 	long			last_meal;
+	long			time_passed;
 	t_data			*data;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 }	t_philo;
 ```
 
-## Terminology
+## Terminology (Threads and Mutexes)
 ### 1. Threads
 Definition - a single sequence stream within a process.
 
@@ -119,4 +121,52 @@ int usleep(useconds_t microseconds) // delay in the execution of a program for a
 int gettimeofday(struct timeval *tv, struct timezone *tz) // retrieves the current time of day and the timezone information
 // 1. A pointer to a struct timeval that will be filled with the current time
 // 2. A pointer to a struct timezone that will be filled with the timezone 
+```
+## Terminilogy (Processes and Semaphores)
+
+##. 1. Processes
+```
+#include <signal.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+int kill(pid_t pid, int sig) // sends signals to processes (SIGTERM (termination), SIGKILL (forceful termination) ...)
+// 1. pid: The process ID of the target process.
+// 2. sig: The signal to send.
+
+pid_t waitpid(pid_t pid, int *status, int options) // waits for the termination of a child process
+// 1. pid: The process ID of the child process to wait for.
+// 2. status: A pointer to an integer where the exit status of the child process will be stored.
+// 3. options: Additional options to control the behavior of waitpid.
+
+pid_t fork(void) //  creates a new process
+```
+### 2. Semaphores
+```
+#include <semaphore.h>
+
+sem_t *sem_open(const char *name, int oflag, mode_t mode, unsigned int value) // opens a semaphore
+// 1. name: A string representing the name of the semaphore. This name must start with a forward slash ("/") and should be unique within the system.
+// 2. oflag: Flags that control the behavior of the function (O_CREAT (create the semaphore if it doesn't exist)).
+// 3. mode: The permissions to set when creating a new semaphore.
+// 4. value: The initial value of the semaphore.
+
+int sem_close(sem_t *sem) // closes a semaphore
+// 1. sem: A pointer to the semaphore structure returned by sem_open.
+
+int sem_post(sem_t *sem) // increments the value of a semaphore.
+// 1. sem: A pointer to the semaphore structure.
+
+int sem_wait(sem_t *sem) // decrements the value of a semaphore.
+// 1. sem: A pointer to the semaphore structure.
+
+int sem_unlink(const char *name) // removes a semaphore from the system.
+// 1. name: A string representing the name of the semaphore to be unlinked.
+```
+### 3. Extra
+```
+#include <stdlib.h>
+
+void exit(int status) // terminates a program or a specific process
+// 1. The exit status of the program. 0 - success, 1 - failure.
 ```
