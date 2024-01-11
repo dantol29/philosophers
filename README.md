@@ -3,7 +3,6 @@ Classic synchronization and concurrency challenge.
 
 ### philo - Philosophers with threads and mutexes.
 
-### philo_bonus - Philosophers with processes and semaphores.
 ## How to compile
 ```
 make
@@ -28,6 +27,12 @@ philosophers have eaten at least number_of_times_each_philosopher_must_eat
 times, the simulation stops. If not specified, the simulation stops when a
 philosopher dies
 ```
+## Error handling and testing
+1. Use valgrind to avoid memory leaks.
+
+2. Use helgrind to remove possible data races, destroy only unlocked mutexes and unlock only locked mutexes.
+
+3. Simple parsing(INT MAX, non-numeric,  more or less arguments)
 ## Main structure
 1. Check arguments.
 
