@@ -28,9 +28,9 @@ times, the simulation stops. If not specified, the simulation stops when a
 philosopher dies
 ```
 ## Error handling and testing
-1. Use valgrind to avoid memory leaks.
+1. Use valgrind to check for memory leaks.
 
-2. Use helgrind to remove possible data races, destroy only unlocked mutexes and unlock only locked mutexes.
+2. Use helgrind to check for possible data races, destroyed locked mutexes and so on.
 
 3. Simple parsing(INT MAX, non-numeric,  more or less arguments)
 ## Main structure
