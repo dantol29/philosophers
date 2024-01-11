@@ -6,7 +6,7 @@
 /*   By: dtolmaco <dtolmaco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 14:07:52 by dtolmaco          #+#    #+#             */
-/*   Updated: 2024/01/10 16:51:33 by dtolmaco         ###   ########.fr       */
+/*   Updated: 2024/01/11 12:27:06 by dtolmaco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	init_forks(t_data *data)
 	i = 0;
 	data->forks_state = malloc(sizeof(int) * data->num_philo);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_philo);
-	pthread_mutex_init(&data->write_dead, NULL);
+	pthread_mutex_init(&data->write, NULL);
 	while (i < data->num_philo)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
@@ -85,10 +85,12 @@ void	free_all(t_philo *philo)
 	i = 0;
 	while (i < philo->data->num_philo)
 	{
+		if (philo->data->forks_state[i] == 1)
+			pthread_mutex_unlock(&philo->data->forks[i]);
 		pthread_mutex_destroy(&philo->data->forks[i]);
 		i++;
 	}
-	pthread_mutex_destroy(&philo->data->write_dead);
+	pthread_mutex_destroy(&philo->data->write);
 	free(philo->data->forks);
 	free(philo->data->threads);
 	free(philo->data->forks_state);

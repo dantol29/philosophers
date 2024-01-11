@@ -6,7 +6,7 @@
 /*   By: dtolmaco <dtolmaco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 14:08:04 by dtolmaco          #+#    #+#             */
-/*   Updated: 2024/01/10 17:03:06 by dtolmaco         ###   ########.fr       */
+/*   Updated: 2024/01/11 12:30:37 by dtolmaco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_data
 	int				philo_finish;
 	int				is_dead;
 	int				*forks_state;
-	pthread_mutex_t	write_dead;
+	pthread_mutex_t	write;
 	pthread_mutex_t	*forks;
 	pthread_t		*threads;
 }	t_data;

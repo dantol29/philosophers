@@ -6,7 +6,7 @@
 /*   By: dtolmaco <dtolmaco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 14:09:20 by dtolmaco          #+#    #+#             */
-/*   Updated: 2024/01/10 16:55:10 by dtolmaco         ###   ########.fr       */
+/*   Updated: 2024/01/11 12:30:57 by dtolmaco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_usleep(t_philo *philo, size_t milliseconds)
 	while ((get_time() - start) < milliseconds)
 	{
 		usleep(500);
-		if (!check_if_dead(philo))
+		if (check_if_dead(philo) == 0)
 			return (1);
 	}
 	return (0);

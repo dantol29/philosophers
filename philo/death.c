@@ -6,7 +6,7 @@
 /*   By: dtolmaco <dtolmaco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 15:25:55 by dtolmaco          #+#    #+#             */
-/*   Updated: 2024/01/10 16:48:16 by dtolmaco         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:43:17 by dtolmaco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,22 @@ static void	check_if_finish(t_philo *philo)
 
 int	check_if_dead(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->data->write);
 	check_if_finish(philo);
 	if (philo->data->is_dead == 1)
 	{
-		pthread_mutex_unlock(philo->right_fork);
-		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(&philo->data->write);
 		return (0);
 	}
 	philo->time_passed = (get_time() - philo->start_time) \
 	- philo->last_meal;
 	if (philo->time_passed >= philo->data->time_to_die)
 	{
-		pthread_mutex_lock(&philo->data->write_dead);
 		message("died", philo);
 		philo->data->is_dead = 1;
-		pthread_mutex_unlock(philo->right_fork);
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(&philo->data->write_dead);
+		pthread_mutex_unlock(&philo->data->write);
 		return (0);
 	}
+	pthread_mutex_unlock(&philo->data->write);
 	return (1);
 }
